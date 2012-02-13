@@ -1,0 +1,423 @@
+@charset "utf-8";
+
+/* ==============================================
+ *  Name   : default.css
+ *  Info   : Reset, Hacks and Main Layout
+ *
+ * Copyright 2011 silvers All rights reserved.
+================================================= */
+
+
+/* 1. YUI CSS Fonts
+=================================================
+    http://yuilibrary.com/yui/docs/cssfonts/
+    Copyright 2011 Yahoo! Inc. All rights reserved.
+
+     77% = 10px | 123.1% = 16px | 167% = 22px
+     85% = 11px | 131.0% = 17px | 174% = 23px
+     93% = 12px | 138.5% = 18px | 182% = 24px
+    100% = 13px | 146.5% = 19px | 189% = 25px
+    108% = 14px | 153.9% = 20px | 197% = 26px
+    116% = 15px | 161.6% = 21px |
+================================================= */
+
+body {
+    font: 13px/1.618 "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック",sans-serif;
+    *font-size: small; /* for IE7, IE6 in standard mode */
+    *font: x-small;    /* for IE5-5.5, IE6 in quirks mode */
+    }
+
+select, input, button, textarea { /* 99% for Safari */
+    font: 99% Verdana,"メイリオ",Meiryo,Arial,Helvetica,"ＭＳ Ｐゴシック",sans-serif;
+    }
+
+table {
+    font-size: inherit;
+    font: 100%; /* for IE5-5.5, MacIE5 */
+    }
+
+pre, code, kbd, samp, tt {
+    font-family: monospace;
+    *font-size: 108%;
+    line-height: 100%;
+    }
+
+/* 2. Reset
+=================================================
+    2-1. Main Reset
+    2-2. Text Module
+    2-3. Hypertext Module
+    2-4. List Module
+    2-5. Edit Module
+    2-6. Forms Module
+    2-7. Tables Module
+    2-8. Image Module
+
+    P - 1:1.414 = 0.707:1
+    G - 1:1.618 = 0.618:1
+================================================= */
+
+/* 2-1. Main Reset
+------------------------------------------------- */
+
+html {
+    height: 100%;
+    overflow-y: scroll;
+    }
+
+body {
+    height: 100%;
+    color: #333;
+    background-color: #fff;
+    }
+
+body,
+h1, h2, h3, h4, h5, h6,
+div, p, blockquote,
+ul, ol, li, dl, dt, dd,
+pre, code, figure,
+form, fieldset, legend, input, textarea,
+th, td {
+    margin: 0;
+    padding: 0;
+    }
+
+em, strong, mark, small,
+caption, th, figcaption,
+address, cite, code, dfn, var {
+    font-style: normal;
+    font-weight: normal;
+    }
+
+article, aside, dialog, figure, footer, header,
+hgroup, nav, section {
+        display:block;
+    }
+
+/* 2-2. Text Module
+------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+    line-height: 1;
+    }
+
+div {
+    }
+
+p, address {
+    margin: 1.618em 10px;
+    }
+
+abbr {
+    border-bottom: 1px dotted #aaa;
+    font-variant:normal;
+    cursor: help;
+}
+
+kbd {
+    border: 1px solid #ccc;
+    padding: 0.1em 4px; 
+    background-color: #f5f5f5;
+    text-transform: uppercase;
+    }
+    kbd.accesskey {
+        border: none;
+        border-bottom: 1px solid #333;
+        padding: 0 0.1em;
+        background: transparent;
+        font-family: "メイリオ", Meiryo, Arial, Helvetica, "ＭＳ Ｐゴシック", sans-serif;
+        }
+
+em {
+    font-weight: bold;
+    }
+
+strong {
+    color: #f7ab00;
+    }
+
+mark {
+    color: #ff9;
+    }
+
+sub {
+    vertical-align:text-bottom;
+    }
+
+sup {
+    vertical-align:text-top;
+    }
+
+q {
+    margin: 0 2px;
+    background-color: #eee;
+    }
+    q:before, q:after {
+        content:'"';
+        padding: 0.1em 3px;
+        font-weight: bold;
+        }
+
+br, cite, code, span {
+    }
+
+
+/* 2-3. Hypertext Module
+------------------------------------------------- */
+
+a:link,
+a:visited {
+    text-decoration: none;
+    }
+    a:hover,
+    a:active {
+        }
+
+
+/* 2-4. List Module
+------------------------------------------------- */
+
+ul, ol {
+    margin: 1em 10px 1em 40px;
+    padding: 0.1em 0;
+    }
+    ol li {
+        list-style: decimal outside;
+        }
+    ul li {
+        list-style: none outside;
+        list-style-type: disc;
+        margin: 0.2em 0;
+        }
+
+dl {
+    margin: 1em 10px;
+    padding: 0.1em 0;
+    }
+    dt {
+        margin: 0.618em 0 0.1em;
+        font-weight: normal;
+        }
+    dd {
+        margin: 0.1em 0 0.618em 2em;
+        }
+
+li ul, li ol, li dl, li p,
+dd ul, dd ol, dd dl, dd p {
+    margin: 0.1em 15px;
+    }
+
+
+/* 2-5. Edit Module
+------------------------------------------------- */
+del {
+    color: #aaa;
+    text-decoration: line-through;
+    }
+    del[datetime]::before {
+        content: " ( "attr(datetime)"\00524a\009664) ";
+        }
+
+ins {
+    border-bottom: 1px dotted #aaa;
+    text-decoration: none;
+    }
+    ins[datetime]::before {
+        content: " ( "attr(datetime)"\004fee\006b63) ";
+        }
+
+
+/* 2-6. Forms Module
+------------------------------------------------- */
+form {
+    margin: 1em 0;
+    padding: 1px 0;
+    }
+    form dl,
+    form p {
+        margin: 0 10px 1em;
+        }
+        form dt,
+        form dd {
+            margin: 0;
+            padding: 0;
+            }
+        form dt {
+            margin-top: 0.618em;
+            }
+
+fieldset {
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ddd;
+    }
+
+legend {
+    margin: 0 0.5em;
+    padding: 0 10px;
+    }
+
+label {
+    font-size: 100%;
+    }
+
+
+input,
+textarea {
+    margin: 0.1em 0;
+    padding: 0.1em 0.2em;
+    border: 1px solid #ccc;
+    font-family: Verdana,"メイリオ",Meiryo,Arial,Helvetica,"ＭＳ Ｐゴシック",sans-serif;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    *font-size: 100%; /* for IE */
+    }
+    input:hover,
+    textarea:hover {
+        border: 1px solid #d29c53;
+        }
+    input:focus,
+    textarea:focus {
+        border: 1px solid #d29c53;
+    }
+    input[type=text],
+    input[type=password],
+    textarea {
+        width: 99%;
+        }
+
+textarea {
+    height: 10em;
+    }
+
+input[type=submit],
+input.submit {
+    border: none;
+    padding: 5px 15px;
+    background-color: #d29c53;
+    text-transform: uppercase;
+    color: #fff;
+    }
+    input.submit:hover {
+        }
+
+input.radio {
+    margin: 0 5px;
+    background-color: transparent;
+    background-image: none;
+    border: none;
+    }
+
+select {
+    border: 1px solid #ddd;
+    }
+
+option {
+    background-color: #fff;
+    }
+
+legend {
+    color: #333; /* for IE */
+    }
+
+
+/* 2-7. Tables Module
+------------------------------------------------- */
+table {
+    margin: 0.618em 30px;
+    border: 1px solid #ccc;
+    border-collapse: separate;
+    border-spacing: 1px;
+    background-color: #fff;
+}
+
+th,td {
+    padding: 0.1em 5px;
+    border: 1px solid #ccc;
+    }
+th {
+    font-weight: bold;
+    text-align: center;
+    background-color: #eee;
+    }
+    .even {
+        }
+    .odd {
+        background-color: #f8f8ff;
+        }
+
+caption {
+    text-align: center;
+    }
+
+
+/* 2-8. Image Module
+------------------------------------------------- */
+img {
+    vertical-align: bottom;
+    border: none;
+    }
+    a:link img {
+        }
+        a:hover img {
+            }
+
+
+/* 2-9. Other Module
+------------------------------------------------- */
+object,
+embed {
+    margin: 0;
+    }
+
+hr {
+    height: 1px;
+    border: none;
+    color: #ccc;
+    background: #ccc;
+    }
+
+
+/* 3. Helper
+=================================================
+    3-1. Clearfix
+    3-2. AutoPagerize
+================================================= */
+
+
+/* 3-1. Clearfix
+------------------------------------------------- */
+#pagebody,
+.clearfix {
+    zoom: 1; /* for IE 6-7 */
+    }
+
+#pagebody:after,
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+    }
+
+
+/* 3-2. AutoPagerize
+------------------------------------------------- */
+
+.autopagerize_page_separator {
+    border:none;
+    }
+
+p.autopagerize_page_info {
+    margin: 0.618em 20px;
+    background: #eee;
+    text-align: center;
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    border-radius: 0.5em;
+    }
+
+

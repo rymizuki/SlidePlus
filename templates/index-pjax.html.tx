@@ -1,0 +1,20 @@
+<section id="content">
+    <header>
+        <h2>Index</h2>
+        <p>サイトトップページ</p>
+    </header>
+
+    <article>
+        <h3>About</h3>
+    </article>
+
+    <article>
+        <h3>Site map</h3>
+    </article>
+
+    <article>
+        <h3>Login</h3>
+        <a href="/authorize">さあログインだ</a>
+    </article>
+</section>
+

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8"/>
+	<title><: $show.title :></title>
+	<link rel="stylesheet" href="/css/default.css" />
+    <link rel="stylesheet" href="/css/slideshow.css" />
+    <style type="text/css">
+    </style>
+</head>
+
+<body>
+
+<div id="container">
+
+    :format_from_xatena($show.content) | raw
+
+    <nav id="controller">
+    </nav>
+
+    <footer id="global-footer">
+        <p></p>
+    </footer>
+</div>
+
+</body>
+
+<script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="/js/slideshow.js"></script>
+</html>

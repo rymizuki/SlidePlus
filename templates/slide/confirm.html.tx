@@ -1,0 +1,59 @@
+:cascade layout;
+
+:around main -> {
+    <div id="slide-confirm">
+    <p><: $fill.title :></p>
+    <section>
+        : format_from_xatena($fill.content) | raw
+    </section>
+    </div>
+
+    :block form | fillinform($fill) | raw -> {
+    <form method="post" action="" class="uniForm">
+        <input type="hidden" name="title" />
+        <input type="hidden" name="content" />
+        <input type="hidden" name="register" value="1" />
+        <fieldset>
+            <div class="buttonHolder">
+                <button type="button" id="submit-register" class="primaryAction">register</button>
+            </div>
+        </fieldset>
+    </form>
+    :}
+:}
+
+:around css -> {
+    <link rel="stylesheet" media="all" href="/css/uni-form.css" />
+    <link rel="stylesheet" media="all" href="/css/default.uni-form.css" />
+:}
+
+:around js -> {
+    <script src="/js/uni-form.jquery.min.js"></script>
+    <script src="/js/uni-form-validation.jquery.min.js"></script>
+    <script>
+        $(function(){ $("form.uniForm").uniform(); });
+        $(function(){
+            var is_register = 0;
+            $('#submit-register').click(function(){
+                if (is_register) return;
+                is_register = 1;
+                var $form = $('form');
+                var request_to = $form.attr('action');
+                var $inputs = $form.children(':hidden'); 
+                var data = {};
+                for (var key in $inputs) 
+                    data[$inputs[key].name] = $inputs[key].value;
+
+                $.post(request_to, data, function(json) {
+                    if (json.is_success) {
+                        location.href = '/slide/list';
+                    } else {
+                        alert('fault');
+                    }
+                    is_register = 0;
+                });
+            });
+        });
+    </script>
+:}
+

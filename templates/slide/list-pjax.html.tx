@@ -1,0 +1,37 @@
+<article>
+    <h3>Description</h3>
+    <p>This page is a list of slides you have registered.</p>
+    <p>If you want to change the contents of the slides, please click on the link Edit List.</p>
+</article>
+
+<article>
+    <h3>Slide list</h3>
+    <table style="width: 99%; margin: 0;">
+        <thead>
+        	<th style="width: 3em;">#</th>
+        	<th style="width: 30em">title</th>
+        	<th>creation date</th>
+        	<th>managiment</th>
+        </thead>
+        <tbody>
+            :for $rows -> $row {
+                <tr>
+                	<td style="text-align:right"><: $~row.count :></td>
+                	<td><a href="/slide/show/<: $row.rid :>" target="_blank"><: $row.title :></a></td>
+                	<td><: $row.created_at :></td>
+                	<td>
+                        <ul>
+                        	<li>
+                        		<a class="pjax" href="/slide/edit/<: $row.rid :>">edit</a>
+                        	</li>
+                        </ul>
+                    </td>
+                </tr>
+            :} else {
+                <tr>
+                	<td colspan="4">Not been created yet.</td>
+                </tr>
+            :}
+        </tbody>
+    </table>
+</article>

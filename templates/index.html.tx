@@ -1,4 +1,5 @@
 :cascade layout
-:around main -> {
-<p><: $msg :></p>
+
+:around content -> {
+    :include 'index-pjax.html.tx';
 :}

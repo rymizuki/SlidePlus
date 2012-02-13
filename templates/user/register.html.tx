@@ -1,0 +1,11 @@
+:cascade layout;
+
+:around content -> {
+    <section id="content">
+        <h2>ユーザ登録</h2>
+
+        <form method="POST" action="">
+        <p><button type="submit">ユーザ登録を承認する</button>
+        </form>
+    </section>
+:}

@@ -1,0 +1,5 @@
+:cascade layout;
+
+:around main -> {
+    :include 'slide/add-pjax.html.tx' {fill => $fill, result => $result};
+:}

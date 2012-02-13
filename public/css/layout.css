@@ -1,0 +1,141 @@
+/* ------------------------------------------
+/*  layout.css
+/*  -- 配置に関するStyle
+/* --------------------------------------- */
+
+/* uniFormの設定 */
+.uniForm legend {
+    font-size: 138.5%;
+    }
+.uniForm .formHint .error {
+    color : #FF7777;
+    }
+.uniForm .buttonHolder {
+    margin-right: 46%;
+    }
+
+/* --- COMMON --- */
+/* ナビゲーション */
+nav ul { margin: 0px; }
+nav li {
+    display: inline;
+    list-style: none;
+}
+
+/* ヘッダ */
+h1 {
+  font-family:"Times New Roman", Times, FreeSerif, serif;
+  font-weight: bold;
+  font-size: 197%;
+  letter-spacing: 8px;
+}
+
+h2 {
+    padding: .2em 0;
+    font-size: 146.5%;
+}
+h3 {
+    margin-top: 1em;
+    margin-bottom: .5em;
+    padding: .5em .5em;
+    font-size: 108%;
+}
+
+/* 初期化 */
+p { margin: 0 }
+
+/* ユーティリティ */
+.button {
+    padding: .6em .8em;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+/* --- BASE --- */
+#container {
+    position: relative;
+    width: 950px;
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+*html #container { height: 100%; } /* IE6までのhack */
+
+/* --- HEADER --- */
+#global-header {
+    width: auto;
+    margin-left: 1em;
+    padding: 13px 0px;
+    padding-top: 35px;
+    padding-bottom: 20px;
+    padding-right: 40px;
+}
+    #global-header > p {
+        margin: 0;
+        font-size: 93%;
+        letter-spacing: 0.5em;
+    }
+#global-nav {
+    width: auto;
+    margin: 0;
+    text-align: right;
+    font-size: 93%;
+    letter-spacing: 0.5em;
+}
+    #global-nav > ul {
+        margin: 0;
+        padding: 0 1em;
+        line-height: 50px;
+        letter-spacing: 2px;
+        display: relative;
+        z-index: 2;
+    }
+    #global-nav li {
+        width: auto;
+        margin: .5em 0;
+        height: 50px;
+    }
+    #global-nav a {
+        display: inline-block;
+        width: 6em;
+        line-height: 48px;
+        text-align:center;
+    }
+    #global-nav .here {
+        font-family:"Times New Roman", Times, FreeSerif, serif;
+        letter-spacing: 4px;
+        float: left;
+        font-size: 182%;
+        text-align: left;
+    }
+    #global-nav .here:hover {
+        background: none;
+    }
+    #global-nav .here:after {
+        content: '';
+        clear: both;
+    }
+
+/* --- MAIN --- */
+section {
+    margin-top: 2em;
+    margin-left: 1em;
+}
+
+/* --- FOOTER --- */
+#global-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2em;
+}
+    #global-footer p {
+      width: 100%;
+      text-align: center;
+      padding-top: 4px;
+      height: 2em;
+      font-size: 85%;
+      letter-spacing: 0.5em;
+    }
+
