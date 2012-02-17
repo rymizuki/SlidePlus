@@ -1,7 +1,9 @@
 (function($){
-    var SlideShow = function(config){
+    var SlideShow = function(){
         this.paths  = [];
         this.page   = 0;
+    };
+    SlideShow.prototype.init = function(config){
         this.section = $(config.section_tag);
         this.title   = $(config.title_tag);
         this.contents= $(config.content_tag);
@@ -46,19 +48,83 @@
         this.changePage(++curr_page);
     };
 
-    $.slideShow = function(config, pathname){
+    var sl = new SlideShow();
+
+    $.slideShow = function(config){
         var config = $.extend({
             section_tag: 'section',
             title_tag  : ':not(article)',
             content_tag: 'article',
         }, config);
 
-        if (pathname === undefined) pathname = location.pathname;
 
-        var sl = new SlideShow(config);
+        sl.init(config);
+
+        var pathname = location.pathname;
         var curr_page = sl.getPage(pathname);
         sl.changePage(curr_page);
 
         return sl;
+    };
+    $.fn.slideControllerNext = function(config) {
+        var config = $.extend({
+            type: 'button',
+            keys: [],
+        }, config);
+
+        var $my = this;
+        var type = config.type;
+
+        if (type == 'button') {
+            $my.click(function(){sl.nextPage(location.pathname)});
+        } else if (type == 'key') {
+            var keys = config.keys;
+            if (keys.length == 0) { alert('not found key!!'); return; }
+
+            $my.bind('keydown', function(e){
+                for (var i=0; i < keys.length; i++) if (e.which == keys[i]) sl.nextPage(location.pathname); 
+            });
+        } else {
+            alert('unmatch type!!');
+        }
+
+        return $my;
+    };
+    $.fn.slideControllerButton = function(config) {
+        var config = $.extend({
+            mode: '', // next or back
+        }, config);
+
+        var $my = this;
+        switch(config.mode) {
+            case 'next': $my.click(function(){sl.nextPage(location.pathname)}); break;
+            case 'back': $my.click(function(){sl.backPage(location.pathname)}); break;
+            default: alert('un matched mode.');
+        }
+
+        return $my;
+    };
+    $.fn.slideControllerKeys = function(config) {
+        var config = $.extend({
+            mode: '', // next or back
+            keys: [],
+        },config);
+
+        var $my = this;
+        var mode = config.mode;
+        var keys = config.keys;
+        if (mode == 'next') {
+            $my.bind('keydown', function(e){
+                for (var i=0; i < keys.length; i++) if (e.which == keys[i]) sl.nextPage(location.pathname);
+            });
+        } else if(mode == 'back') {
+            $my.bind('keydown', function(e){
+                for (var i=0; i < keys.length; i++) if (e.which == keys[i]) sl.backPage(location.pathname);
+            });
+        } else {
+            alert('unmached mode.');
+        }
+
+        return $my;
     };
 }(jQuery));
