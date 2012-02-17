@@ -143,6 +143,13 @@ post '/user/register' => sub {
 };
 
 
+=pod
+
+=head2 /slide/show/:rid/:page
+
+スライドページ
+
+=cut
 get '/slide/show/:rid/:page' => {rid => undef, page => 0}, sub {
     my $self = shift;
 
