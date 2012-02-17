@@ -18,6 +18,13 @@ use SlidePlus::Bootstrap;
 use SlidePlus::DB;
 use SlidePlus::Util::Template;
 
+=pod
+
+=head2
+
+pjaxコンテンツレンダリング用TXのセットアップ
+
+=cut
 my $home = app->home;
 
 my %template_options = (
@@ -27,14 +34,23 @@ my %template_options = (
     },
     cache_dir   => $home->rel_dir('tmp'),
 );
-plugin 'xslate_renderer' => {
-    template_options => \%template_options,
-};
 
 my $tx = Text::Xslate->new({
     path => $home->rel_dir('templates'),
     %template_options,
 });
+
+
+=pod
+
+=head2
+
+Mojolicious::LiteのPluginセットアップ
+
+=cut
+plugin 'xslate_renderer' => {
+    template_options => \%template_options,
+};
 
 
 =pod
@@ -286,10 +302,17 @@ post '/slide/remove:rid' => sub {
     return $self->render_json({is_success => 1});
 };
 
+
+=pod
+
+=head2
+
+環境設定
+
+=cut
 local $ENV{LM_DEBUG} = 1;
 SlidePlus::Bootstrap->run;
 
-app->log->debug(app->home);
-
 app->log->level('debug');
+
 app->start;
