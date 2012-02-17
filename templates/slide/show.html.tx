@@ -26,5 +26,29 @@
 </body>
 
 <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
-<script type="text/javascript" src="/js/slideshow.js"></script>
+<script type="text/javascript" src="/js/jquery.slideshow.js"></script>
+<script type="text/javascript">
+$(function(){
+    var sl = $.slideShow({
+        section_tag: 'section',
+        title_tag  : ':not(article)',
+        content_tag: 'article',
+    });
+
+    // controller
+    $('#controller > #next').click(function(e){sl.nextPage(location.pathname)});
+    var $w = $(window);
+    $w.bind('keydown', function(e){
+        switch(e.which) {
+            case 78:
+            case 13:
+            case 39: sl.nextPage(location.pathname);break;
+            case 66:
+            case 80:
+            case 37: sl.backPage(location.pathname);break;
+        }
+    });
+});
+</script>
+
 </html>
