@@ -59,7 +59,7 @@ get '/authorize' => sub {
     my $self = shift;
 
     my $conf = scope_container('config')->{oauth};
-    my $auth = OAuth->new($conf);
+    my $auth = SlidePlus::Auth->new($conf);
 
     if ($self->session('is_login')) {
         return $self->redirect_to('/slide/list');
