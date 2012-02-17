@@ -66,30 +66,6 @@
 
         return sl;
     };
-    $.fn.slideControllerNext = function(config) {
-        var config = $.extend({
-            type: 'button',
-            keys: [],
-        }, config);
-
-        var $my = this;
-        var type = config.type;
-
-        if (type == 'button') {
-            $my.click(function(){sl.nextPage(location.pathname)});
-        } else if (type == 'key') {
-            var keys = config.keys;
-            if (keys.length == 0) { alert('not found key!!'); return; }
-
-            $my.bind('keydown', function(e){
-                for (var i=0; i < keys.length; i++) if (e.which == keys[i]) sl.nextPage(location.pathname); 
-            });
-        } else {
-            alert('unmatch type!!');
-        }
-
-        return $my;
-    };
     $.fn.slideControllerButton = function(config) {
         var config = $.extend({
             mode: '', // next or back
