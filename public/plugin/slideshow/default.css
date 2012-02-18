@@ -1,0 +1,67 @@
+@charset "utf-8";
+
+/* 1. YUI CSS Fonts
+=================================================
+    http://yuilibrary.com/yui/docs/cssfonts/
+    Copyright 2011 Yahoo! Inc. All rights reserved.
+
+     77% = 10px | 123.1% = 16px | 167% = 22px
+     85% = 11px | 131.0% = 17px | 174% = 23px
+     93% = 12px | 138.5% = 18px | 182% = 24px
+    100% = 13px | 146.5% = 19px | 189% = 25px
+    108% = 14px | 153.9% = 20px | 197% = 26px
+    116% = 15px | 161.6% = 21px |
+================================================= */
+body {
+    font: 13px/1.618 "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック",sans-serif;
+    *font-size: small; /* for IE7, IE6 in standard mode */
+    *font: x-small;    /* for IE5-5.5, IE6 in quirks mode */
+    }
+
+select, input, button, textarea { /* 99% for Safari */
+    font: 99% Verdana,"メイリオ",Meiryo,Arial,Helvetica,"ＭＳ Ｐゴシック",sans-serif;
+    }
+
+table {
+    font-size: inherit;
+    font: 100%; /* for IE5-5.5, MacIE5 */
+    }
+
+pre, code, kbd, samp, tt {
+    font-family: monospace;
+    *font-size: 108%;
+    line-height: 100%;
+    }
+
+
+/* 2. SlideShow Desgin
+================================================= */
+
+/* 2-1. level class
+------------------------------------------------- */
+.level-1 {
+    font-size: 167%;
+    }
+.level-1 > h3 {
+    line-height: 2;
+    font-weight: bold;
+    letter-spacing: 0.5em;
+    }
+.level-2 {
+    margin-top: 3em;
+    margin-bottom: 2em;
+    padding-left: 1.5em;
+    letter-spacing: 0.5em;
+    }
+.level-2 h4 {
+    line-height: 2;
+    font-weight: normal;
+    letter-spacing: 0.5em;
+    }
+
+/* 2-2. tags
+------------------------------------------------- */
+ol {
+    margin-left: 2em;
+    }
+

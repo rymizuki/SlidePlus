@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8"/>
 	<title><: $show.title :></title>
-	<link rel="stylesheet" href="/plugin/default.css" />
     <link rel="stylesheet" href="/plugin/slideshow/default.css" />
     <style type="text/css">
     </style>
