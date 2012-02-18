@@ -5,13 +5,19 @@
     };
     SlideShow.prototype.init = function(config){
         this.section = $(config.section_tag);
-        this.title   = $(config.title_tag);
+        this.title   = this.section.children(config.title_tag);
         this.contents= $(config.content_tag);
 
         var contents = this.contents;
         var pages    = [this.title];
         for (var cnt=1; cnt <= contents.length; cnt++) {
             pages[cnt] = $(contents[cnt-1]).hide();
+        }
+
+        for(var cnt=0; cnt < pages.length; cnt++) {
+            pages[cnt]
+                .bind('slide:hide', config.hide)
+                .bind('slide:show', config.show);
         }
 
         this.pages = pages;
@@ -21,7 +27,6 @@
         var page  = paths[4];
         paths.splice(4,1);
         this.paths = paths;
-        this.page  = page;
         return page;
     };
     SlideShow.prototype._setPushState = function() {
@@ -29,23 +34,28 @@
         var push_path = this.paths.join('/')+'/'+page;
         window.history.pushState({curr_page:page}, document.title, push_path);
     };
-    SlideShow.prototype.changePage = function(page) {
+    SlideShow.prototype.changePage = function(page, handler) {
         var pages = this.pages;
-        if (page >= pages.length) return;
-        if (!page || page < 0) page = 0;
-        this.section.children().hide();
-        pages[page].show();
+
+        if (!page) page = 0;
+        if ((page >= pages.length) || (page < 0 && handler == 'back')) return;
+
+        var prev_page = this.page;
+        if (prev_page === undefined) prev_page = 0;
+
+        pages[prev_page].trigger('slide:hide');
+        pages[page].trigger('slide:show');
 
         this.page = page;
         this._setPushState();
     };
     SlideShow.prototype.backPage = function(path) {
         var curr_page = this.getPage(path);
-        this.changePage(--curr_page);
+        this.changePage(--curr_page, 'back');
     };
     SlideShow.prototype.nextPage = function(path) {
         var curr_page = this.getPage(path);
-        this.changePage(++curr_page);
+        this.changePage(++curr_page, 'next');
     };
 
     var sl = new SlideShow();
@@ -55,6 +65,8 @@
             section_tag: 'section',
             title_tag  : ':not(article)',
             content_tag: 'article',
+            hide: function(e){$(this).hide('slow');},
+            show: function(e){$(this).show('fast');},
         }, config);
 
 
