@@ -66,7 +66,7 @@
             title_tag  : ':not(article)',
             content_tag: 'article',
             hide: function(e){$(this).hide('slow');},
-            show: function(e){$(this).show('fast');},
+            show: function(e){$(this).show('slow');},
         }, config);
 
 
