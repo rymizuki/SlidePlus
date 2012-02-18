@@ -23,13 +23,13 @@
 :}
 
 :around css -> {
-    <link rel="stylesheet" media="all" href="/css/uni-form.css" />
-    <link rel="stylesheet" media="all" href="/css/default.uni-form.css" />
+    <link rel="stylesheet" media="all" href="/plugin/uni-form/uni-form.css" />
+    <link rel="stylesheet" media="all" href="/plugin/uni-form/default.uni-form.css" />
 :}
 
 :around js -> {
-    <script src="/js/uni-form.jquery.min.js"></script>
-    <script src="/js/uni-form-validation.jquery.min.js"></script>
+    <script src="/plugin/uni-form/uni-form.jquery.min.js"></script>
+    <script src="/plugin/uni-form/uni-form-validation.jquery.min.js"></script>
     <script>
         $(function(){ $("form.uniForm").uniform(); });
         $(function(){
