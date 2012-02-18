@@ -41,6 +41,20 @@ $(function(){
 
     $('#controller > #next').slideControllerButton({mode:'next'});
     $('#controller > #back').slideControllerButton({mode:'back'});
+
+    //var rid = 'aaa';
+    //var socket = new WebSocket('ws://slide-plus.ry-m.com/slide/controller/'+rid+'/'+0);
+    //var socket = new WebSocket("ws://slide-plus.ry-m.com/ws");
+    var socket = new WebSocket("<: $c.url_for('ws').to_abs :>");
+
+    socket.onopen = function() {
+        alert('open websocket');
+    };
+
+    socket.onmessage = function (){
+    };
+
+
 });
 </script>
 

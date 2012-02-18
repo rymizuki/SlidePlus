@@ -4,6 +4,9 @@ use warnings;
 use 5.010_000;
 use lib qw/lib/;
 
+use Mojolicious::Lite;
+use Mojo::JSON;
+
 use DateTimeX::Factory;
 use HTML::FillInForm::Lite qw/fillinform/;
 use Log::Minimal;
@@ -11,7 +14,6 @@ use Scope::Container;
 use Text::Xslate qw/html_builder/;
 use Validator::Custom;
 
-use Mojolicious::Lite;
 
 use SlidePlus::Auth;
 use SlidePlus::Bootstrap;
@@ -155,6 +157,50 @@ get '/slide/show/:rid/:page' => {rid => undef, page => 0}, sub {
 
     my $row = SlidePlus::DB->get_db->get({rid => $self->param('rid')});
     $self->render('slide/show', show => $row);
+};
+
+my $clients = {};
+websocket '/ws' => sub {
+    my $self = shift;
+
+    $self->app->log->debug('socket open');
+
+    my $cid = sprintf "%s" => $self->tx;
+    $clients->{$cid} = $self->tx;
+
+    $self->on(message => sub {
+        my ($self, $msg) = @_;
+        $self->send_message("echo:$msg");
+    });
+
+    $self->on(finish => sub {
+        my $self = shift;
+        $self->app->log->debug('WebSocket closed');
+    });
+};
+
+websocket '/slide/controller/:rid/:page' => {rid => undef, page => 0}, sub {
+    my $self = shift;
+
+    $self->app->log->debug($self->param('rid'));
+
+    my $cid = sprintf "%s" => $self->tx;
+    $clients->{$cid} = $self->tx;
+
+    $self->recieve_message(sub {
+        my ($self, $msg) = @_;
+
+        my $json = Mojo::JSON->new;
+
+        $clients->{$cid}->send_message(
+            $json->encode({test => 'ok'}),
+        );
+    });
+
+    $self->finished(sub {
+        app->log->debug('Client disconnected');
+        delete $clients->{$cid};
+    });
 };
 
 
@@ -321,5 +367,5 @@ local $ENV{LM_DEBUG} = 1;
 SlidePlus::Bootstrap->run;
 
 app->log->level('debug');
-
+app->log->debug($ENV{MOJO_WEBSOCKET_DEBUG});
 app->start;
