@@ -24,34 +24,57 @@ use SlidePlus::Util::Template;
 
 =head2
 
-pjaxコンテンツレンダリング用TXのセットアップ
-
-=cut
-my $home = app->home;
-
-my %template_options = (
-    function    => {
-        fillinform => html_builder(\&fillinform),
-        format_from_xatena  => \&SlidePlus::Util::Template::format_from_xatena,
-    },
-    cache_dir   => $home->rel_dir('tmp'),
-);
-
-my $tx = Text::Xslate->new({
-    path => $home->rel_dir('templates'),
-    %template_options,
-});
-
-
-=pod
-
-=head2
-
 Mojolicious::LiteのPluginセットアップ
 
 =cut
 plugin 'xslate_renderer' => {
-    template_options => \%template_options,
+    template_options => {
+        function    => {
+            fillinform          => html_builder(\&fillinform),
+            format_from_xatena  => \&format_from_xatena,
+        },
+    },
+};
+
+=pod
+
+=head2 /slide/show/:rid/:page
+
+スライドページ
+
+=cut
+get '/slide/show/:rid/:page' => {rid => undef, page => 0}, sub {
+    my $self = shift;
+
+    my $row = SlidePlus::DB->get_db->get({rid => $self->param('rid')});
+    $self->render('slide/show', show => $row);
+};
+
+my $clients = {};
+websocket '/websocket/:rid' => {rid => undef}, sub {
+    my $self = shift;
+
+    $self->app->log->debug('socket open');
+
+    my $id  = sprintf "%s", $self->tx;
+    my $rid = $self->param('rid');
+    $clients->{$rid}{$id} = $self->tx;
+
+    $self->on(message => sub {
+        my ($self, $msg) = @_;
+
+        $self->app->log->debug($msg);
+        
+        #my $json = Mojo::JSON->new->encode($msg);
+        for (keys %{$clients->{$rid}}) {
+            $clients->{$rid}{$_}->send_message($msg);
+        }
+    });
+
+    $self->on(finish => sub {
+        my $self = shift;
+        $self->app->log->debug('WebSocket closed');
+    });
 };
 
 
@@ -65,12 +88,7 @@ plugin 'xslate_renderer' => {
 get '/' => sub {
     my $self  = shift;
 
-    if ($self->param('_pjax')) {
-        my $string = $tx->render('index.html.tx');
-        $self->render_text($string);
-    } else {
-        $self->render('index');
-    }
+    $self->render('index');
 };
 
 get '/authorize' => sub {
@@ -145,64 +163,6 @@ post '/user/register' => sub {
 };
 
 
-=pod
-
-=head2 /slide/show/:rid/:page
-
-スライドページ
-
-=cut
-get '/slide/show/:rid/:page' => {rid => undef, page => 0}, sub {
-    my $self = shift;
-
-    my $row = SlidePlus::DB->get_db->get({rid => $self->param('rid')});
-    $self->render('slide/show', show => $row);
-};
-
-my $clients = {};
-websocket '/ws' => sub {
-    my $self = shift;
-
-    $self->app->log->debug('socket open');
-
-    my $cid = sprintf "%s" => $self->tx;
-    $clients->{$cid} = $self->tx;
-
-    $self->on(message => sub {
-        my ($self, $msg) = @_;
-        $self->send_message("echo:$msg");
-    });
-
-    $self->on(finish => sub {
-        my $self = shift;
-        $self->app->log->debug('WebSocket closed');
-    });
-};
-
-websocket '/slide/controller/:rid/:page' => {rid => undef, page => 0}, sub {
-    my $self = shift;
-
-    $self->app->log->debug($self->param('rid'));
-
-    my $cid = sprintf "%s" => $self->tx;
-    $clients->{$cid} = $self->tx;
-
-    $self->recieve_message(sub {
-        my ($self, $msg) = @_;
-
-        my $json = Mojo::JSON->new;
-
-        $clients->{$cid}->send_message(
-            $json->encode({test => 'ok'}),
-        );
-    });
-
-    $self->finished(sub {
-        app->log->debug('Client disconnected');
-        delete $clients->{$cid};
-    });
-};
-
 
 =pod
 
@@ -219,6 +179,11 @@ under sub {
         $self->redirect_to('/authorize');
         return;
     }
+
+    my $is_pjax = $self->param('_pjax') ? 1 : 0;
+    $self->app->log->debug('this request is pjax') if $is_pjax;
+
+    $self->stash->{is_pjax} = $is_pjax;
 
     return 1;
 };
@@ -238,6 +203,14 @@ get '/user/logout' => sub {
 スライド管理系のページ
 
 =cut
+
+get '/slide/controller/:rid' => {rid => undef}, sub {
+    my $self = shift;
+
+    my $row = SlidePlus::DB->get_db->get({rid => $self->param('rid')});
+    $self->render('slide/controller', show => $row);
+};
+
 get '/slide/list/:page' => {page => 1} => sub {
     my $self = shift;
 
@@ -247,24 +220,13 @@ get '/slide/list/:page' => {page => 1} => sub {
     });
 
     my %values = (rows => $rows, pager => $pager);
-
-    if ($self->param('_pjax')) {
-        my $string = $tx->render('slide/list-pjax.html.tx', \%values);
-        $self->render_text($string);
-    } else {
-        $self->render('slide/list', %values);
-    }
+    $self->render('slide/list', %values);
 };
 
 get '/slide/add' => sub {
     my $self = shift;
 
-    if ($self->param('_pjax')) {
-        my $string = $tx->render('slide/add-pjax.html.tx');
-        $self->render_text($string);
-    } else {
-        $self->render('slide/add');
-    }
+    $self->render('slide/add');
 };
 
 post '/slide/add' => sub {
@@ -364,8 +326,10 @@ post '/slide/remove:rid' => sub {
 
 =cut
 local $ENV{LM_DEBUG} = 1;
-SlidePlus::Bootstrap->run;
+local $ENV{MOJO_WEBSOCKET_DEBUG} = 1;
 
 app->log->level('debug');
-app->log->debug($ENV{MOJO_WEBSOCKET_DEBUG});
+
+SlidePlus::Bootstrap->run;
+
 app->start;
