@@ -10,6 +10,12 @@
 
 <body>
 
+    <nav>
+        <ul>
+            <li><span id="status"></span></li>
+        </ul>
+    </nav>
+
 <div id="container">
 
     :format_from_xatena($show.content) | raw
@@ -21,8 +27,6 @@
         <p></p>
     </footer>
 </div>
-
-</body>
 
 <script type="text/javascript" src="/plugin/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="/plugin/slideshow/jquery.slideshow.js"></script>
@@ -42,20 +46,58 @@ $(function(){
     $('#controller > #next').slideControllerButton({mode:'next'});
     $('#controller > #back').slideControllerButton({mode:'back'});
 
-    //var rid = 'aaa';
-    //var socket = new WebSocket('ws://slide-plus.ry-m.com/slide/controller/'+rid+'/'+0);
-    //var socket = new WebSocket("ws://slide-plus.ry-m.com/ws");
-    var socket = new WebSocket("<: $c.url_for('ws').to_abs :>");
+    // websocket
 
+    var rid = "<: $show.rid :>";
+    var ws  = "ws://"+location.host+"/websocket/"+rid;
+    var socket;
+    if      (typeof WebSocket != 'undefined')       socket = new WebSocket(ws);
+    else if (typeof MozWebSocket != 'undefined')    socket = new MozWebSocket(ws);
+    else {
+        alert('WebSocket非対応です');
+        return false;
+    }
+    var connection_interval = setInterval(function(){socket.send('ping')}, 200000);
+
+    var $status = $("#status");
     socket.onopen = function() {
-        alert('open websocket');
+        $status.text("open websocket");
     };
 
-    socket.onmessage = function (){
+    var auth_key = "";
+    var authorize = function(key){
+        if(key===undefined || auth_key) return;
+        //dialogを表示
+        var input_key = window.prompt("通信キーを入力してください");
+        if  (key == input_key) {
+            socket.send(JSON.stringify({mode:'connection-res', key:key, response:'ok'}));
+            $status.text('connect');
+            auth_key = key;
+        } else {
+            alert('faile');
+            socket.send(JSON.stringify({mode:'connection-res', key:key, response:'faile'}));
+            $status.text('no-connection');
+        }
+    };
+    socket.onmessage = function (msg){
+        var res = JSON.parse(msg.data);
+        switch(res.mode){
+            case 'connect': authorize(res.key); break;
+            case 'next':
+                if (auth_key != res.key) break;
+                sl.nextPage(location.pathname); break;
+            case 'back':
+                if (auth_key != res.key) break;
+                sl.backPage(location.pathname); break;
+        }
     };
 
-
+    socket.onclose = function(){
+        $status.text('close websocket');
+        auth_key = "";
+    }
 });
 </script>
 
+</body>
 </html>

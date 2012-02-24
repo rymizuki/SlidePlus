@@ -1,5 +1,29 @@
 :cascade layout
 
 :around main -> {
-    :include 'slide/list-pjax.html.tx';
+    <article>
+        <h3>Description</h3>
+        <p>This page is a list of slides you have registered.</p>
+        <p>If you want to change the contents of the slides, please click on the link Edit List.</p>
+    </article>
+
+    <article>
+        <h3>Slide list</h3>
+        <p>Has introduced a slide control that you use the "websocket" this site.</p>
+        <p>Click on the link, "controller" If you wish to slide operation by the smartphone, please perform the settings.</p>
+    </article>    
+
+    :for $rows -> $row {
+    <article class="content">
+        <header>
+            <h4><: $~row.count :>.&nbsp;<a href="/slide/show/<: $row.rid :>" target="_blank"><: $row.title :></a></h4>
+            <p class="text-right"><: $row.created_at :></p>
+        </header>
+
+        <ul class="menu">
+            <li><a class="pjax" href="/slide/controller/<: $row.rid :>">controller</a></li>
+            <li><a class="pjax" href="/slide/edit/<: $row.rid :>">edit</a></li>
+        </ul>
+    </article>
+    :}
 :}

@@ -1,0 +1,19 @@
+:cascade layout
+
+:around main -> {
+    <style type="text/css">
+    :# FIXME
+    #slide-controller a { display: block; line-height:2; font-size: 120%}
+    </style>
+
+    <article>
+        <h2>Controller</h2>
+        
+        <div id="status"></div>
+
+        <ul id="slide-controller">
+            <li><a href="javascript:void(0)" id="next">次のスライド</a></li>
+            <li><a href="javascript:void(0)" id="back">前のスライド</a></li>
+        </ul>
+    </article>
+:}

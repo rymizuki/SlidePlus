@@ -1,5 +1,36 @@
 :cascade layout;
 
 :around main -> {
-    :include 'slide/add-pjax.html.tx' {fill => $fill, result => $result};
+    :block form | fillinform($fill || {}) | raw -> {
+    <form method="post" action="">
+        <fieldset class="uniForm">
+            <legend>Slide register form</legend>
+            <p class="disclaimer">this is register form for slide content</p>
+
+            <div class="ctrlHolder<: error_class('title', $result) :>">
+                <label for="title">slide title</label>
+                <input type="text" name="title" id="title" class="textInput required" />
+                <div class="formHint">
+                    <p>display for slide top.</p>
+                    :error_message('title', $result);
+                </div>
+            </div>
+
+            <div class="ctrlHolder<: error_class('content', $result) :>">
+                <label for="content">slide content</label>
+                <textarea name="content" id="content" class="required"></textarea>
+                <div class="formHint">
+                    <p>can use Hatena記法 or HTML.</p>
+                    :error_message('content', $result);
+                </div>
+            </div>
+
+            <div class="buttonHolder">
+                <button type="reset"  class="secondaryAction">reset all inputs</button>
+                <button type="submit" class="primaryAction">to confirmation</button>
+            </div>
+        </fieldset>
+    </form>
+    :}
+
 :}
