@@ -4,6 +4,9 @@
 /* --------------------------------------- */
 
 /* uniFormの設定 */
+.uniform {
+    width: 90%;
+    }
 .uniForm legend {
     font-size: 138.5%;
     }
@@ -12,6 +15,10 @@
     }
 .uniForm .buttonHolder {
     margin-right: 46%;
+    }
+
+form > fieldset {
+    border: 0px;
     }
 
 /* --- COMMON --- */
@@ -31,13 +38,22 @@ h1 {
 }
 
 h2 {
-    padding: .2em 0;
-    font-size: 146.5%;
+    position: relative;
+    top: -75px; 
+    color: #fff;
+    font-family:"Times New Roman", Times, FreeSerif, serif;
+    font-size: 182%;
+    letter-spacing: 4px;
+    text-align: left;
 }
 h3 {
     margin-top: 1em;
     margin-bottom: .5em;
     padding: .5em .5em;
+    font-size: 131.0%;
+}
+h4 {
+    margin-top: 1em;
     font-size: 108%;
 }
 
@@ -45,6 +61,7 @@ h3 {
 p { margin: 0 }
 
 /* ユーティリティ */
+article > p {text-indent: .5em;}
 .button {
     padding: .6em .8em;
     border-radius: 5px;
@@ -52,10 +69,18 @@ p { margin: 0 }
     -moz-border-radius: 5px;
 }
 
+.text-right {
+    text-align: right;
+}
+
+.menu {margin:0}
+.menu li { display: inline; list-style: none; }
+.menu li:before {content: '['}
+.menu li:after {content: ']'}
+
 /* --- BASE --- */
 #container {
     position: relative;
-    width: 950px;
     min-height: 100%;
     height: auto;
     margin: 0 auto;
@@ -91,17 +116,6 @@ p { margin: 0 }
         display: relative;
         z-index: 2;
     }
-    #global-nav li {
-        width: auto;
-        margin: .5em 0;
-        height: 50px;
-    }
-    #global-nav a {
-        display: inline-block;
-        width: 6em;
-        line-height: 48px;
-        text-align:center;
-    }
     #global-nav .here {
         font-family:"Times New Roman", Times, FreeSerif, serif;
         letter-spacing: 4px;
@@ -120,7 +134,12 @@ p { margin: 0 }
 /* --- MAIN --- */
 section {
     margin-top: 2em;
-    margin-left: 1em;
+    padding-bottom: 3em;
+}
+
+section > article,
+section > form {
+    padding: 1em;
 }
 
 /* --- FOOTER --- */

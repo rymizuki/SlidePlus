@@ -1,0 +1,28 @@
+/* ------------------------------------------
+/*  pc.css
+/*  -- PC画面サイズに適応するStyle
+/* --------------------------------------- */
+
+/* --- BASE --- */
+#container {
+    width: 90%;
+}
+
+/* --- GROBAL HEADER --- */
+#global-nav li {
+    width: auto;
+    margin: .5em 0;
+    height: 50px;
+}
+#global-nav a {
+    display: inline-block;
+    width: 6em;
+    line-height: 48px;
+    text-align:center;
+}
+
+.content {
+    float: left;
+    width: 30%;
+    margin: 0.5%;
+}
