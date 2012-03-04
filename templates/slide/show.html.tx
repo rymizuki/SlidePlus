@@ -5,23 +5,53 @@
 	<title><: $show.title :></title>
     <link rel="stylesheet" href="/plugin/slideshow/default.css" />
     <style type="text/css">
+
+#controller {
+    }
+    #active-controller,
+    #draft-controller {
+        padding: .2em 1em;
+        background-color: #000;
+        background: -webkit-gradient(linear, left top, left bottom, from(#000), to(#222));
+        background: -moz-linear-gradient(top#000, #222);
+    }
+    #draft-controller {
+        text-align: right;
+        }
+    #controller #status {
+        height: 100%;
+        color: #fff;
+        }
+
+    #controller ul {
+        margin: 0;
+        padding:0;
+        text-align: right;
+        list-style:none;
+        }
+        #controller ul li{
+            display: inline-block;
+            }
+
     </style>
 </head>
 
 <body>
 
-    <nav>
-        <ul>
-            <li><span id="status"></span></li>
-        </ul>
+    <nav id="controller">
+        <div id="active-controller">
+            <ul>
+                <li><a href="javascript:void(0)" id="back"><img src="/img/mono_icons/circleleft32.png" alt="戻る" /></a></li>
+                <li><a href="javascript:void(0)" id="next"><img src="/img/mono_icons/circleright32.png" alt="進む" /></a></li>
+                <li><a href="javascript:void(0)" id="status-show"><img src="/img/mono_icons/gear32.png" alt="ツールバーを閉じる" /></a></li>
+            </ul>
+            <div id="status"></div>
+        </div>
     </nav>
 
 <div id="container">
 
     :format_from_xatena($show.content) | raw
-
-    <nav id="controller">
-    </nav>
 
     <footer id="global-footer">
         <p></p>
@@ -31,6 +61,7 @@
 <script type="text/javascript" src="/plugin/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="/plugin/slideshow/jquery.slideshow.js"></script>
 <script type="text/javascript">
+"use strict";
 $(function(){
     var sl = $.slideShow({
         section_tag: 'section',
@@ -43,11 +74,18 @@ $(function(){
         .slideControllerKeys({mode:'next', keys:[13, 39, 78]})
         .slideControllerKeys({mode:'back', keys:[37, 66, 80]});
 
-    $('#controller > #next').slideControllerButton({mode:'next'});
-    $('#controller > #back').slideControllerButton({mode:'back'});
+    var $controller = $("#controller");
+    var $status = $controller.find("#status");
+    $controller.find('#next').slideControllerButton({mode:'next'});
+    $controller.find('#back').slideControllerButton({mode:'back'});
+    $status.hide();
+    $controller.find('#status-show').toggle(function(){
+        $status.show();
+    }, function(){
+        $status.hide();
+    });
 
     // websocket
-
     var rid = "<: $show.rid :>";
     var ws  = "ws://"+location.host+"/websocket/"+rid;
     var socket;
@@ -59,7 +97,6 @@ $(function(){
     }
     var connection_interval = setInterval(function(){socket.send('ping')}, 200000);
 
-    var $status = $("#status");
     socket.onopen = function() {
         $status.text("open websocket");
     };
