@@ -268,10 +268,10 @@ get '/slide/edit/:rid' => sub {
 
     my $slide = SlidePlus::DB->get_db->get({rid => $self->param('rid')});
 
-    $self->render('slide/edit', slide => $slide);
+    $self->render('slide/add', fill => $slide);
 };
 
-post '/slide/edit' => sub {
+post '/slide/edit/:rid' => sub {
     my $self = shift;
 
     state $rule = [
@@ -281,31 +281,28 @@ post '/slide/edit' => sub {
     ];
 
     my $params = $self->req->body_params->to_hash;
+    $params->{rid} = $self->param('rid');
 
     my $validator = Validator::Custom->new;
     my $v_result = $validator->validate($params, $rule);
 
-    if ($self->req->param('register')) {
+    if (delete $params->{register}) {
         # 更新処理
-        my $result = $v_result->to_hash;
         unless($v_result->is_ok) {
-            return $self->render_json($result)
+            return $self->render_json($v_result->to_hash)
         }
 
         my $db = SlidePlus::DB->get_db;
+        $db->edit({%$params, user_rid => $self->session('user_rid')});
 
-        $db->edit({%$result, user_rid => $self->session('user_rid')});
-
-        my $slide = $db->get({rid => $result->{rid}});
-        return $self=>redner_json({is_success => 1, rid => $slide->{rid}});
+        return $self->render_json({is_success => 1});
     } else {
         # 確認画面
-        my $result = $v_result->to_hash;
         unless ($v_result->is_ok) {
-            return $self->render('slide/edit', fill => $params, result => $result->to_hash);
+            return $self->render('slide/add', fill => $params, result => $v_result->to_hash);
         }
 
-        $self->render('slide/confirm' => $result);
+        $self->render('slide/confirm', fill => $params);
     }
 };
 

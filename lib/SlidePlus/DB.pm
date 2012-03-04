@@ -118,7 +118,7 @@ __PACKAGE__->query(edit => (
         rid     => {isa => 'Str'},
         user_rid=> {isa => 'Str'},
     ),
-    q{UPDATE slide SET (title = ?, content = ?) WHERE rid = ? AND user_rid = ? AND deleted_fg = 0},
+    q{UPDATE slide SET title = ?, content = ? WHERE rid = ? AND user_rid = ? AND deleted_fg = 0},
 );
 
 =pod
