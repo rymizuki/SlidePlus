@@ -16,6 +16,7 @@ body {
     font: 13px/1.618 "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック",sans-serif;
     *font-size: small; /* for IE7, IE6 in standard mode */
     *font: x-small;    /* for IE5-5.5, IE6 in quirks mode */
+    margin: 0;
     }
 
 select, input, button, textarea { /* 99% for Safari */
@@ -32,7 +33,6 @@ pre, code, kbd, samp, tt {
     *font-size: 108%;
     line-height: 100%;
     }
-
 
 /* 2. SlideShow Desgin
 ================================================= */
@@ -64,4 +64,3 @@ pre, code, kbd, samp, tt {
 ol {
     margin-left: 2em;
     }
-
