@@ -1,2 +1,8 @@
+inc/
 log/
 tmp/
+META.yml
+MYMETA.json
+MYMETA.yml
+Makefile
+
